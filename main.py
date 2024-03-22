@@ -80,18 +80,30 @@ class Recording(Screen):
         self.__con = sqlite3.connect("databases\Main.db")
         self.__cur = self.__con.cursor()
         self.__cur.execute("SELECT name from sqlite_master WHERE type='table';")
-        self.variable = self.__cur.fetchall()
+        for i in self.__cur.fetchall():
+            self.categories.append(i[0])
+        self.get_varslength()
+        return self.__cur.fetchall()
 
-    def on_pre_enter(self):
-        self.get_variables()
-        self.index = 0
+    def on_enter(self):
+        self.categories = []
+        self.variables = self.get_variables()
+        self.catindex = 0
+        self.varindex = 0
         with open("temp\\id.txt", "r") as f:    
             self.userID = f.read()        
         os.remove("temp\\id.txt")
     
+    def get_varslength(self):
+        data=self.__cur.execute(f'''SELECT * FROM {self.categories[self.catindex]}''')
+        return len(data.description)
+    
+    def getnext(self):
+        if self.varindex < len():
+            pass
+    
     def update_text(self):
-        self.index += 1
-        
+        pass
 
     def on_pre_leave(self):
         with open("temp\\id.txt", "w") as f:    
