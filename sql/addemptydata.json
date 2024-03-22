@@ -1,0 +1,8 @@
+[
+    "INSERT INTO Records (userID, RecordID) VALUES (?,?)",
+    "INSERT INTO User (userID, username, email, password, noOfRecords) VALUES (?,?,?,?,?)",
+    "INSERT INTO ResultData (DataID, RecordID, FilterID, CheckID, date, time) VALUES (?,?,?,?,?,?)",
+    "INSERT INTO PoolCheck (PoolID, FreeChlorine, TotalChlorine, CombinedChlorine, pH, Temperature) VALUES (?,?,?,?,?,?)",
+    "INSERT INTO Checks (checkID, Alkalinity, Calcium, DissolvedSolids, SatIndex, VisualClarity, PoolTemp) VALUES (?,?,?,?,?,?,?)",
+    "INSERT INTO Filters (FilterID, Skimmer, Main, Flowmeter, Strainers, MainWater, FilterGauge) VALUES (?,?,?,?,?,?,?)"
+]

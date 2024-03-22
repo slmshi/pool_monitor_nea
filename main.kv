@@ -1,0 +1,420 @@
+#: import WipeTransition kivy.uix.screenmanager.WipeTransition
+
+WindowManager:
+    MainWindow:
+    LoginWindow:
+    SignWindow:
+    BasicMenu:
+    Record_menu:
+    Recording
+    BasicMenu_View:
+
+
+<MainWindow>:
+    name: "main"
+
+    FloatLayout:
+        size_hint: 1, 1
+        Image:
+            source: 'images/bg.jpg'
+            fit_mode: 'cover'
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            Label:
+                size_hint: 0.3, 1
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 1, 1
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "vertical"
+                    size_hint: 0.5, 0.5
+                    Label:
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Pool Monitoring System"
+                    Button:
+                        font_size: 40
+                        text: "Start"
+                        on_release:
+                            root.manager.transition = WipeTransition(duration=1)
+                            app.root.current = "loginwindow"
+                    Button:
+                        font_size: 40
+                        text: "Sign up"
+                        on_release:
+                            root.manager.transition = WipeTransition(duration=1)
+                            app.root.current = "signwindow"
+                    Button:
+                        font_size: 40
+                        text: "Exit"
+                        on_release: 
+                            root.manager.transition = WipeTransition(duration=1)
+                            app.root.current = "basicmenu"
+            Label:
+                size_hint: 0.3, 1
+
+<LoginWindow>:
+    name: "loginwindow"
+
+    FloatLayout:
+        size_hint: 1, 1
+        Image:
+            source: 'images/bg.jpg'
+            fit_mode: 'cover'
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            Label:
+                size_hint: 0.3, 1
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 1, 1
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "vertical"
+                    size_hint: 0.5, 0.9
+                    Label: 
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Username:"
+                    TextInput:
+                        id: username
+                        size_hint: 1, 0.5
+                        multiline: False
+                    Label:
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Email:"
+                    TextInput:
+                        id: email
+                        size_hint: 1, 0.5 
+                        multiline: False
+                    Label: 
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Password:"
+                    TextInput:
+                        id: password
+                        size_hint: 1, 0.5
+                        multiline: False
+                    Button:
+                        padding: 16
+                        text: "Submit"
+                        size_hint: 1, 0.5
+                        on_release: 
+                            root.manager.transition = WipeTransition(duration=1)
+                            root.loginattempt()
+            Label:
+                size_hint: 0.3, 1
+
+<SignWindow>:
+    name: "signwindow"
+
+    FloatLayout:
+        size_hint: 1, 1
+        Image:
+            source: 'images/bg.jpg'
+            fit_mode: 'cover'
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            Label:
+                size_hint: 0.3, 1
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 1, 1
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "vertical"
+                    size_hint: 0.5, 0.9
+                    Label:
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Register"
+                    Label: 
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Username:"
+                    TextInput:
+                        id: username
+                        size_hint: 1, 0.5
+                        multiline: False
+                    Label:
+                        id: pass_label 
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Password:"
+                    TextInput:
+                        id: password
+                        size_hint: 1, 0.5
+                        multiline: False
+                    Label:
+                        id: email_label
+                        color: 20, 20, 20
+                        outline_color: 55, 55, 55
+                        outline_width: 3
+                        font_size: 40
+                        text: "Email:"
+                    TextInput:
+                        id: email
+                        size_hint: 1, 0.5 
+                        multiline: False
+                    Button:
+                        padding: 16
+                        text: "Submit"
+                        size_hint: 1, 0.5
+                        on_release: 
+                            root.manager.transition = WipeTransition(duration=1)
+                            root.signup()
+            Label:
+                size_hint: 0.3, 1
+
+<BasicMenu>:
+    name: "basicmenu"
+    FloatLayout:
+        size_hint: 1, 1
+        canvas.before:
+            Color: 
+                rgba: 0.6, 0.6 , 0.6 , 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            Label:
+                size_hint: 0.1, 1
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 1, 1
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "horizontal"
+                    size_hint: 0.9, 0.9
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout: 
+                            canvas.before:
+                                Color: 
+                                    rgba: 1, 1, 1, 0.5
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            size_hint: 1, 0.4
+                            orientation: 'vertical'
+                            Image:
+                                source: "images/pfp.png"
+                            Label: 
+                                id: username
+                                font_size: 30
+                                color: 0, 0, 0, 1
+
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout:
+                            size_hint: 0.9, 0.8
+                            spacing: 150
+                            orientation: "vertical"
+                            Button:
+                                font_size: 30
+                                text: "Record Results"
+                                on_release: 
+                                    root.manager.transition = WipeTransition(duration=1)
+                                    app.root.current = "Record_menu"
+                            Button:
+                                font_size: 30
+                                text: "See Profile"
+                                on_release: 
+                                    root.manager.transition = WipeTransition(duration=1)
+                                    app.root.current = "basicmenu_view"
+            Label:
+                size_hint: 0.1, 1
+
+<BasicMenu_View>:
+    name: "basicmenu_view"
+
+    FloatLayout:
+        size_hint: 1, 1
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 0.9, 0.9
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "horizontal"
+                    size_hint: 0.9, 0.9
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout: 
+                            canvas.before:
+                                Color: 
+                                    rgba: 1, 1, 1, 0.5
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            size_hint: 1, 0.4
+                            orientation: 'vertical'
+                            Image:
+                                padding: 16
+                                source: "images/pfp.png"
+                            Label:
+                                id: username
+                                font_size: 30
+                                color: 0, 0, 0, 1
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout:
+                            size_hint: 0.9, 0.8
+                            spacing: 150
+                            orientation: "vertical"
+                            AnchorLayout:
+                                anchor_x: "center"
+                                anchor_y: "center"
+                                canvas.before:
+                                    Color: 
+                                        rgba: 1, 1, 1, 0.5
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                            BoxLayout:
+                                orientation: "horizontal"
+
+<Record_menu>:
+    name: "Record_menu"
+
+    FloatLayout:
+        size_hint: 1, 1
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 0.9, 0.9
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "horizontal"
+                    size_hint: 0.9, 0.9
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout:
+                            size_hint: 0.9, 0.8
+                            spacing: 150
+                            orientation: "vertical"
+                            Button:
+                                text: "Full Record"
+                                on_release:
+                                    root.manager.transition = WipeTransition(duration=1)
+                                    app.root.current = "recording"
+                            Button:
+                                text: "Regular Record"
+                                on_release:
+                                    root.manager.transition = WipeTransition(duration=1)
+                                    app.root.current = "recording_p"
+
+<Recording>:
+    name: "recording"
+
+    FloatLayout:
+        size_hint: 1, 1
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 0.9, 0.9
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "horizontal"
+                    size_hint: 0.9, 0.9
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout:
+                            size_hint: 0.9, 0.8
+                            spacing: 150
+                            orientation: "vertical"
+                            BoxLayout:
+                                size_hint: 1, 1
+                                spacing: 150
+                                orientation: "horizontal"
+                                Label:
+                                    id: variabletext
+                                    text: ""
+                                TextInput:
+                                    id: userinput
+                                Button:
+                                    text: "Next"
+                                Button:
+                                    text: "Skip"

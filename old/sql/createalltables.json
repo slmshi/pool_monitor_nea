@@ -1,0 +1,11 @@
+["CREATE TABLE Record(userID int,RecordID int NOT NULL,FOREIGN KEY (userID) REFERENCES User(userID),FOREIGN KEY (RecordID) REFERENCES RecordData(DataID));"
+,
+"CREATE TABLE User(userID int NOT NULL,username varchar(255) NOT NULL,email varchar(255) NOT NULL,password varchar(255) NOT NULL,noOfRecords int NOT NULL,PRIMARY KEY (userID));"
+,
+"CREATE TABLE ResultData(DataID int NOT NULL,RecordID int NOT NULL,FilterID int,checkID int,PRIMARY KEY (DataID),FOREIGN KEY (RecordID) REFERENCES Main(RecordID),FOREIGN KEY (FilterID) REFERENCES Filters(filterID),FOREIGN KEY (checkID) REFERENCES Checks(checkID));"
+,
+"CREATE TABLE PoolCheck(PoolID int NOT NULL,FreeChlorine float NOT NULL,TotalChlorine float NOT NULL,CombinedChlorine float NOT NULL,pH float NOT NULL,Temperature float NOT NULL,Date date NOT NULL,Time time NOT NULL,PRIMARY KEY (PoolID));"
+,
+"CREATE TABLE Checks(checkID int NOT NULL,Alkalinity int NOT NULL,Calcium int NOT NULL,DissolvedSolids int NOT NULL,SatIndex float NOT NULL,VisualClarity float NOT NULL,PoolTemp float NOT NULL,PRIMARY KEY (checkID));"
+,
+"CREATE TABLE Filters(filterID int NOT NULL,Skimmer bool NOT NULL,Main bool NOT NULL,Flowmeter int NOT NULL,Strainers bool NOT NULL,MainWater bool NOT NULL,FilterGauge bool NOT NULL);"]
