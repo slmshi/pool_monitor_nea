@@ -82,14 +82,17 @@ class Recording(Screen):
         self.__cur.execute("SELECT name from sqlite_master WHERE type='table';")
         for i in self.__cur.fetchall():
             self.categories.append(i[0])
-        self.get_varslength()
-        return self.__cur.fetchall()
+        return self.get_varslength()
 
     def on_enter(self):
         self.categories = []
-        self.variables = self.get_variables()
+        self.variables = self.get_all()
+        self.cat_txt = ""
+        self.var_txt = ""
         self.catindex = 0
+        self.cur_cat = ""
         self.varindex = 0
+        self.cur_var = ""
         with open("temp\\id.txt", "r") as f:    
             self.userID = f.read()        
         os.remove("temp\\id.txt")
@@ -98,12 +101,26 @@ class Recording(Screen):
         data=self.__cur.execute(f'''SELECT * FROM {self.categories[self.catindex]}''')
         return len(data.description)
     
-    def getnext(self):
-        if self.varindex < len():
-            pass
+    def gonext(self):
+        if self.varindex < len(self.get_varslength):
+            self.varindex += 1
+        else:
+            #if catindex is at the end of its list
+            if self.catindex < len(self.categories):
+                self.catindex += 1
+                self.varindex = 0
+                
+            #if end of category and var indexes - go results
+            else:
+                pass 
+                #enter code to go results page
+                
+    def button_press(self):
+        pass
     
     def update_text(self):
-        pass
+        self.cur_cat = self.categories[self.catindex]
+        self.cur_var = self.variables[self.varindex]
 
     def on_pre_leave(self):
         with open("temp\\id.txt", "w") as f:    
