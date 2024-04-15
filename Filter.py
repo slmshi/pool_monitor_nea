@@ -1,6 +1,6 @@
 import sqlite3
 
-class Filter:
+class Filter():
     def __init__(self):
         self.__con = sqlite3.connect("databases\main.db")
         self.__cur = self.__con.cursor()

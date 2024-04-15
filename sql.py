@@ -9,7 +9,7 @@ import User
 import Filter
 import Check
 
-class database(self):
+class database():
 
     def __init__(self, userID):
         self.__con = sqlite3.connect("databases\main.db")

@@ -130,14 +130,14 @@ class Recording(Screen):
     
     
     def recordbutton(self):
-        results[self.catindex].append([self.cur_var, self.ids.userinput.text])
+        self.results[self.catindex].append([self.cur_var, self.ids.userinput.text])
     
     def gonext(self):
         self.recordbutton()
         if self.varindex < self.categories[self.catindex][1]:
             self.varindex += 1
             self.update_text()
-        elif self.varindex == self.categories[self.catindex][1]:
+        elif self.varindex == self.categories[self.catindex][1] and self.catindex < len(self.categories[0]):
             self.varindex = 0
             self.catindex += 1
             self.update_text()
@@ -147,7 +147,7 @@ class Recording(Screen):
                 self.catindex += 1
                 self.varindex = 0
                 self.update_text()
-            if self.catindex == len(self.categories[0]):
+            if self.catindex == len(self.categories[0]) and self.varindex < self.categories[self.catindex][1]:
                 self.varindex += 1
                 self.update_text()
             else:
@@ -168,13 +168,13 @@ class Recording(Screen):
 
     def on_pre_leave(self):
         with open("temp\\results.json", "w") as f:
-            f.write(self.results)       
+            json.dump(self.results, f)       
         with open("temp\\id.txt", "w") as f:
             f.write(self.userID)
 
 class Results(Screen):
     def on_enter(self):
-        with open("temp\\results.json", "w") as f:
+        with open("temp\\results.json", "r") as f:
             self.data = json.load(f)
         with open("temp\\id.txt", "r") as f:    
             self.userID = f.read()
