@@ -13,10 +13,11 @@ class MainWindow(Screen):
         print("test")
 
 class LoginWindow(Screen):
+    
     def loginattempt(self):
-        username = self.ids.username.text
+        username = self.ids.username.text.lower()
         password = self.ids.password.text
-        email = self.ids.email.text
+        email = self.ids.email.text.lower()
         user = login()
         user.userLogin(username, password, email)
         if user.userLogin(username, password, email):
@@ -31,21 +32,20 @@ class LoginWindow(Screen):
 
 class SignWindow(Screen):
     def signup(self):
-        username = self.ids.username.text
+        username = self.ids.username.text.lower()
         password = self.ids.password.text
-        email = self.ids.email.text
+        email = self.ids.email.text.lower()
         user = login()
         if not user.validateemail(email):
-            self.ids.email_label.text = "Incorrect Email, Try again:"
             self.resetfields()
             if not user.validatepswd(password):
-                self.ids.pass_label.text = "Password not met requirements, Try again:"
                 self.resetfields() 
         else:
             self.ids.email_label.text = "Email: "
             self.ids.pass_label.text = "Password: "
             user.addto(username, email, password)
             self.manager.current = 'loginwindow'
+        user.close()
     
     def resetfields(self):
         self.ids.password.text = ""
@@ -56,10 +56,10 @@ class BasicMenu(Screen):
 
     def on_enter(self):
         with open("temp\\id.txt", "r") as f:    
-            self.userID = f.read()        
+            self.userID = f.read()
         os.remove("temp\\id.txt")
         user = login()
-        self.ids.username.text = "Hello" + user.UsernamegetByUserID(self.userID)
+        self.ids.username.text = "Hello " + user.UsernamegetByUserID(self.userID).capitalize()
 
     def on_pre_leave(self):
         with open("temp\\id.txt", "w") as f:    
@@ -76,58 +76,83 @@ class Record_menu(Screen):
             f.write(self.userID)
 
 class Recording(Screen):
-    def get_variables(self):
+    def get_cats(self):
         self.__con = sqlite3.connect("databases\Main.db")
         self.__cur = self.__con.cursor()
-        self.__cur.execute("SELECT name from sqlite_master WHERE type='table';")
-        for i in self.__cur.fetchall():
-            self.categories.append(i[0])
-        return self.get_varslength()
+        self.categories = []
+        self.variables = []
+        temp = []# for vars
+        cat_temp = [] # for cats
+        i = "table"
+        data = self.__cur.execute(f"SELECT name from sqlite_master WHERE type='{i}';")
+        for i in data.fetchall():
+            cat_temp.append(i[0])
+            data = self.__cur.execute(f"SELECT * from {i[0]};")
+            for column in data.description:
+                print(column)
+                temp.append(column[0])
+            self.variables.append(temp)
+            self.categories.append(cat_temp, len(temp))
+            temp = []
 
     def on_enter(self):
-        self.categories = []
-        self.variables = self.get_all()
+        self.get_cats()
         self.cat_txt = ""
         self.var_txt = ""
         self.catindex = 0
         self.cur_cat = ""
         self.varindex = 0
         self.cur_var = ""
+        self.update_text()
         with open("temp\\id.txt", "r") as f:    
             self.userID = f.read()        
         os.remove("temp\\id.txt")
     
     def get_varslength(self):
-        data=self.__cur.execute(f'''SELECT * FROM {self.categories[self.catindex]}''')
+        data = self.__cur.execute(f'''SELECT * FROM {self.categories[self.catindex]}''')
         return len(data.description)
     
+    def check_int(self):
+        userinput = self.ids.userinput.text
+        if userinput.isnumeric():
+            return True
+        else:
+            return False
+    
+    def check_limits(self):
+        pass
+    
     def gonext(self):
-        if self.varindex < len(self.get_varslength):
+        if self.varindex < self.get_varslength():
             self.varindex += 1
+            self.update_text()
         else:
             #if catindex is at the end of its list
             if self.catindex < len(self.categories):
                 self.catindex += 1
                 self.varindex = 0
-                
+                self.update_text()
             #if end of category and var indexes - go results
             else:
                 pass 
-                #enter code to go results page
+                #code to go results page
                 
     def button_press(self):
-        pass
+        self.userinput = self.ids.userinput.text
+        self.gonext()
     
     def update_text(self):
         self.cur_cat = self.categories[self.catindex]
-        self.cur_var = self.variables[self.varindex]
+        self.cur_var = self.variables[self.varindex][0]
+        self.ids.variabletext.text = self.cur_var
+        self.ids.categorytext.text = self.cur_cat
 
     def on_pre_leave(self):
-        with open("temp\\id.txt", "w") as f:    
+        with open("temp\\id.txt", "w") as f:
             f.write(self.userID)
 
 class Recording_p(Screen):
-    pass
+    pass    
 
 class BasicMenu_View(Screen):
     pass

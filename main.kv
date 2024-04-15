@@ -99,7 +99,7 @@ WindowManager:
                         text: "Username:"
                     TextInput:
                         id: username
-                        size_hint: 1, 0.5
+                        size_hint: 1, 0.3
                         multiline: False
                     Label:
                         color: 20, 20, 20
@@ -109,7 +109,7 @@ WindowManager:
                         text: "Email:"
                     TextInput:
                         id: email
-                        size_hint: 1, 0.5 
+                        size_hint: 1, 0.3 
                         multiline: False
                     Label: 
                         color: 20, 20, 20
@@ -119,15 +119,23 @@ WindowManager:
                         text: "Password:"
                     TextInput:
                         id: password
-                        size_hint: 1, 0.5
+                        size_hint: 1, 0.3
                         multiline: False
+                        font_name: "fonts/Password Dots Regular.ttf"
                     Button:
                         padding: 16
                         text: "Submit"
-                        size_hint: 1, 0.5
+                        size_hint: 1, 0.3
                         on_release: 
                             root.manager.transition = WipeTransition(duration=1)
                             root.loginattempt()
+                    Button:
+                        padding: 16
+                        text: "Back"
+                        size_hint: 1, 0.5
+                        on_release:
+                            root.manager.transition = WipeTransition(duration=1)
+                            app.root.current = "main"
             Label:
                 size_hint: 0.3, 1
 
@@ -185,6 +193,7 @@ WindowManager:
                         id: password
                         size_hint: 1, 0.5
                         multiline: False
+                        font_name: "fonts/Password Dots Regular.ttf"
                     Label:
                         id: email_label
                         color: 20, 20, 20
@@ -203,6 +212,13 @@ WindowManager:
                         on_release: 
                             root.manager.transition = WipeTransition(duration=1)
                             root.signup()
+                    Button:
+                        padding: 16
+                        text: "Back"
+                        size_hint: 1, 0.5
+                        on_release:
+                            root.manager.transition = WipeTransition(duration=1)
+                            app.root.current = "main"
             Label:
                 size_hint: 0.3, 1
 
@@ -400,21 +416,30 @@ WindowManager:
                     size_hint: 0.9, 0.9
                     AnchorLayout:
                         anchor_x: 'center'
-                        anchor_y: 'center'
+                        anchor_y: 
                         BoxLayout:
-                            size_hint: 0.9, 0.8
-                            spacing: 150
+                            size_hint: 1, 1
+                            spacing: 15
                             orientation: "vertical"
                             BoxLayout:
                                 size_hint: 1, 1
-                                spacing: 150
+                                spacing: 15
                                 orientation: "horizontal"
                                 Label:
                                     id: variabletext
                                     text: ""
-                                TextInput:
-                                    id: userinput
+                                Label:
+                                    id: categorytext
+                                    text: ""
+                            TextInput:
+                                id: userinput
+                            BoxLayout:
+                                size_hint: 1, 1
+                                spacing: 15
+                                orientation: "horizontal"
                                 Button:
                                     text: "Next"
+                                    on_release:
+                                        root.gonext()
                                 Button:
                                     text: "Skip"
