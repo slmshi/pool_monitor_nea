@@ -83,18 +83,27 @@ class Recording(Screen):
         self.variables = []
         temp = []# for vars
         cat_temp = [] # for cats
+        subtract_varlen = 0
         i = "table"
         data = self.__cur.execute(f"SELECT name from sqlite_master WHERE type='{i}';")
         for i in data.fetchall():
-            cat_temp.append(i[0])
-            data = self.__cur.execute(f"SELECT * from {i[0]};")
-            for column in data.description:
-                print(column)
-                temp.append(column[0])
-            self.variables.append(temp)
-            self.categories.append(cat_temp, len(temp))
-            temp = []
-
+            banlist = ["Record", "ResultData", "User"]
+            if i[0] not in banlist:
+                cat_temp.append(i[0])
+                data = self.__cur.execute(f"SELECT * from {i[0]};")
+                
+                for column in data.description:
+                    if "ID" not in column[0]:
+                        temp.append(column[0])
+                    else: 
+                        subtract_varlen += 1
+                self.variables.append(temp)
+                self.categories.append([i, len(temp) - subtract_varlen])
+                subtract_varlen = 0
+                temp = []
+        print(self.variables)
+        print(self.categories)
+        
     def on_enter(self):
         self.get_cats()
         self.cat_txt = ""
@@ -103,14 +112,11 @@ class Recording(Screen):
         self.cur_cat = ""
         self.varindex = 0
         self.cur_var = ""
+        self.results = []
         self.update_text()
         with open("temp\\id.txt", "r") as f:    
             self.userID = f.read()        
         os.remove("temp\\id.txt")
-    
-    def get_varslength(self):
-        data = self.__cur.execute(f'''SELECT * FROM {self.categories[self.catindex]}''')
-        return len(data.description)
     
     def check_int(self):
         userinput = self.ids.userinput.text
@@ -122,30 +128,42 @@ class Recording(Screen):
     def check_limits(self):
         pass
     
+    def recordbutton(self):
+        results.append([self.cur_cat, self.cur_var, self.ids.userinput.text])
+    
     def gonext(self):
-        if self.varindex < self.get_varslength():
+        self.recordbutton()
+        if self.varindex < self.categories[self.catindex][1]:
             self.varindex += 1
             self.update_text()
+        elif self.varindex == self.categories[self.catindex][1]:
+            self.varindex = 0
+            self.catindex += 1
+            self.update_text()
         else:
-            #if catindex is at the end of its list
-            if self.catindex < len(self.categories):
+            #if catindex is not at the end of its list
+            if self.catindex < len(self.categories[0]):
                 self.catindex += 1
                 self.varindex = 0
                 self.update_text()
-            #if end of category and var indexes - go results
+            if self.catindex == len(self.categories[0]):
+                self.varindex += 1
+                self.update_text()
             else:
-                pass 
+                self.results()
                 #code to go results page
-                
-    def button_press(self):
-        self.userinput = self.ids.userinput.text
+    
+    def skip(self):
+        self.ids.userinput.text = 0
         self.gonext()
     
     def update_text(self):
         self.cur_cat = self.categories[self.catindex]
-        self.cur_var = self.variables[self.varindex][0]
+        self.cur_var = self.variables[self.catindex][self.varindex]
+        print(self.cur_cat)
+        print(self.cur_var)
         self.ids.variabletext.text = self.cur_var
-        self.ids.categorytext.text = self.cur_cat
+        self.ids.categorytext.text = self.cur_cat[0][0]
 
     def on_pre_leave(self):
         with open("temp\\id.txt", "w") as f:

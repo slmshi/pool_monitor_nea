@@ -17,13 +17,13 @@ class login():
             data = data[0]
             print(data)
 
-    def UsernamegetByUserID(self, userID):
+    def UsernamegetByUserID(self, userID): #gets the username by user id
         data = self.__cur.execute(f"SELECT username FROM User WHERE userID='{userID}'")
         data = data.fetchone()
         print(data[0])
         return str(data[0])
 
-    def ifEmailExists(self, email):
+    def ifEmailExists(self, email): #checks if the email exists in the database
         print(email)
         data = self.__cur.execute(f"SELECT userID from User where email='{email}'")
         data = data.fetchone()
@@ -34,7 +34,7 @@ class login():
             print("User does not Exists")
             return False
 
-    def userLogin(self, username, password, email):
+    def userLogin(self, username, password, email): # logs in the user
         check = self.__cur.execute(f"SELECT UserID FROM User WHERE email='{email}' AND username='{username}' AND password='{password}'")
         check = check.fetchone()
         print(check)
@@ -44,18 +44,18 @@ class login():
             print("wrong")
             return False
 
-    def reset(self):
+    def reset(self): # resets the table (only used)
         self.__cur.execute("DROP TABLE User")
         self.__con.commit()
         self.__cur.execute("CREATE TABLE User(userID int NOT NULL,username varchar(255) NOT NULL,email varchar(255) NOT NULL,password varchar(255) NOT NULL,noOfRecords int NOT NULL,PRIMARY KEY (userID));")
 
-    def createUserID(self):
+    def createUserID(self): # gets a new user id
         data = self.__cur.execute("SELECT COUNT(userID) FROM User")
         data = data.fetchone()
         data = data[0]
         return data + 1
 
-    def addto(self, username, email, password):
+    def addto(self, username, email, password): # creates a new user
         UserID = self.createUserID()
         data = (UserID, username, email, password, 0)
 
@@ -63,7 +63,7 @@ class login():
         self.__con.commit()
         print("Successful")
 
-    def validatepswd(self, password):
+    def validatepswd(self, password): # validates the password
         hasnumber = False
         hasspecial = False
         hascapital = False
@@ -84,13 +84,13 @@ class login():
         else:
             return True
 
-    def validateemail(self, email):
+    def validateemail(self, email): # validates the email
         if "@" in email:
             return not self.ifEmailExists(email)
         else:
             return False
 
-    def validateUser(self, username):
+    def validateUser(self, username): # Validates the username
         data = self.__cur.execute(f"SELECT * from User where username='{username}'")
         data = data.fetchone()
         if data:
@@ -98,7 +98,7 @@ class login():
         else:
             print("no data")
 
-    def login(self):
+    def login(self): #logs in the player (used in debug)
         email = input("Email: ")
         while self.validateemail(email):
             email = input("(Invalid input, Try Again) Email: ")
@@ -110,7 +110,7 @@ class login():
 
         self.__con.close()
 
-    def signup(self):
+    def signup(self): # signs a user up (used in debug)
         username = input("Username: ")
         email = input("Email: ")
         while not self.validateemail(email):
@@ -121,12 +121,5 @@ class login():
         self.addto(username, email, password)
         self.__con.close()
 
-    def close(self):
+    def close(self): #allows closing of the database outside of the class
         self.__con.close()
-
-def main():
-    users = Users()
-    users.signup()
-    users.login()
-""" users.signup()
-    users.view()"""

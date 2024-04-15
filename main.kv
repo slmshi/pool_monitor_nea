@@ -386,11 +386,6 @@ WindowManager:
                                 on_release:
                                     root.manager.transition = WipeTransition(duration=1)
                                     app.root.current = "recording"
-                            Button:
-                                text: "Regular Record"
-                                on_release:
-                                    root.manager.transition = WipeTransition(duration=1)
-                                    app.root.current = "recording_p"
 
 <Recording>:
     name: "recording"
@@ -443,3 +438,5 @@ WindowManager:
                                         root.gonext()
                                 Button:
                                     text: "Skip"
+                                    on_release:
+                                        root.Skip()
