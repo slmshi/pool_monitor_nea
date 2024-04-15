@@ -24,7 +24,7 @@ class ResultData():
             PRIMARY KEY (DataID), 
             FOREIGN KEY (RecordID) REFERENCES Main(RecordID),
             FOREIGN KEY (FilterID) REFERENCES Filters(FilterID), 
-            FOREIGN KEY (PoolCheckID) REFERENCES PoolCheck(PoolID), 
+            FOREIGN KEY (PoolID) REFERENCES PoolCheck(PoolID), 
             FOREIGN KEY (checkID) REFERENCES Checks(checkID));""")
         self.__con.commit()
 
@@ -39,7 +39,7 @@ class ResultData():
         #get dataID
         data = (dataID, RecordID, FilterID, PoolCheckID, CheckID, date, time)
         self.__cur.execute(
-            "INSERT INTO ResultData (DataID, RecordID, FilterID, PoolCheckID, CheckID, date, time) VALUES (?,?,?,?,?,?)", data)
+            "INSERT INTO ResultData (DataID, RecordID, FilterID, PoolCheckID, checkID, date, time) VALUES (?,?,?,?,?,?)", data)
         self.__con.commit()
         
     def getdatetime(self):
@@ -64,22 +64,16 @@ class ResultData():
         print(data.fetchall())
 
     def getFilterData(self, FilterID):
-        data = self.__cur.execute("SELECR ")
+        dataid = self.__cur.execute("SELECT COUNT(FilterID) FROM ResultData")
+        dataid = dataid.fetchall()
+        dataid = dataid[0][0]
+        return dataid + 1
 
     def getCheckData(self, CheckID):
-        pass
-
-    def getAllData(self, DataID):
-        data = self.__cur.execute("SELECT RecordID, FilterID, CheckID, date, time FROM ResultData WHERE DataID=" + str(DataID))
-        data = data.fetchall()
-        data = data[0]
-        getRecordData(data[0])
-        getFilterData(data[1])
-        getCheckData(data[2])
+        dataid = self.__cur.execute("SELECT COUNT(checkID) FROM ResultData")
+        dataid = dataid.fetchall()
+        dataid = dataid[0][0]
+        return dataid + 1
 
     def close(self):
         self.__con.close()
-
-result = ResultData()
-result.reset()
-result.close()

@@ -440,3 +440,68 @@ WindowManager:
                                     text: "Skip"
                                     on_release:
                                         root.Skip()
+
+<Results>:
+    name: "results"
+
+    FloatLayout:
+        size_hint: 1, 1
+        BoxLayout:
+            size_hint: 1, 1
+            orientation: "horizontal"
+            AnchorLayout:
+                canvas.before:
+                    Color: 
+                        rgba: 1, 1, 1, 0.5
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                size_hint: 0.9, 0.9
+                anchor_x: "center"
+                anchor_y: "center"
+                BoxLayout:
+                    spacing: 16
+                    orientation: "horizontal"
+                    size_hint: 0.9, 0.9
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout: 
+                            canvas.before:
+                                Color: 
+                                    rgba: 1, 1, 1, 0.5
+                                RoundedRectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            size_hint: 1, 0.4
+                            orientation: 'vertical'
+                            Image:
+                                padding: 16
+                                source: "images/pfp.png"
+                            Label:
+                                id: username
+                                font_size: 30
+                                color: 0, 0, 0, 1
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        BoxLayout:
+                            size_hint: 0.9, 0.8
+                            spacing: 150
+                            orientation: "vertical"
+                            AnchorLayout:
+                                anchor_x: "center"
+                                anchor_y: "center"
+                                canvas.before:
+                                    Color: 
+                                        rgba: 1, 1, 1, 0.5
+                                    RoundedRectangle:
+                                        pos: self.pos
+                                        size: self.size
+                            BoxLayout:
+                                size_hint: 1, 1
+                                orientation: "vertical"
+                                Button:
+                                    text: "Submit"
+                                    on_release:
+                                        root.submit()

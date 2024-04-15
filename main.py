@@ -1,4 +1,5 @@
 import os
+import json
 import sqlite3
 from kivy.app import App
 from kivy.lang import Builder
@@ -7,6 +8,7 @@ from User import login
 from PoolCheck import PoolCheck
 from ResultData import ResultData
 from Record import Record
+from sql import database
 
 class MainWindow(Screen):
     def test(self):
@@ -99,12 +101,14 @@ class Recording(Screen):
                         subtract_varlen += 1
                 self.variables.append(temp)
                 self.categories.append([i, len(temp) - subtract_varlen])
+                self.results.append([i])
                 subtract_varlen = 0
                 temp = []
         print(self.variables)
         print(self.categories)
         
     def on_enter(self):
+        self.results = []
         self.get_cats()
         self.cat_txt = ""
         self.var_txt = ""
@@ -112,7 +116,6 @@ class Recording(Screen):
         self.cur_cat = ""
         self.varindex = 0
         self.cur_var = ""
-        self.results = []
         self.update_text()
         with open("temp\\id.txt", "r") as f:    
             self.userID = f.read()        
@@ -125,11 +128,9 @@ class Recording(Screen):
         else:
             return False
     
-    def check_limits(self):
-        pass
     
     def recordbutton(self):
-        results.append([self.cur_cat, self.cur_var, self.ids.userinput.text])
+        results[self.catindex].append([self.cur_var, self.ids.userinput.text])
     
     def gonext(self):
         self.recordbutton()
@@ -150,7 +151,7 @@ class Recording(Screen):
                 self.varindex += 1
                 self.update_text()
             else:
-                self.results()
+                self.manager.current = 'results'
                 #code to go results page
     
     def skip(self):
@@ -166,11 +167,27 @@ class Recording(Screen):
         self.ids.categorytext.text = self.cur_cat[0][0]
 
     def on_pre_leave(self):
+        with open("temp\\results.json", "w") as f:
+            f.write(self.results)       
         with open("temp\\id.txt", "w") as f:
             f.write(self.userID)
 
-class Recording_p(Screen):
-    pass    
+class Results(Screen):
+    def on_enter(self):
+        with open("temp\\results.json", "w") as f:
+            self.data = json.load(f)
+        with open("temp\\id.txt", "r") as f:    
+            self.userID = f.read()
+        os.remove("temp\\id.txt")
+        
+    def submit(self):
+        datab = database(self.userID)
+        datab.addto(self.data)
+        self.manager.current = 'basicmenu_view'
+
+    def on_pre_leave(self):       
+        with open("temp\\id.txt", "w") as f:
+            f.write(self.userID)
 
 class BasicMenu_View(Screen):
     pass
@@ -185,7 +202,7 @@ kv = Builder.load_file("main.kv")
 
 class MainApp(App):
     def build(Self):
-        return kv
+        return kv 
 
 if __name__=="__main__":
     MainApp().run()
