@@ -22,7 +22,7 @@ class database():
         self.rdID = 0
         self.rID = 0
     
-    def createtable():
+    def createtable(self):
         self.createR()
         self.createPC()
         self.createC()
