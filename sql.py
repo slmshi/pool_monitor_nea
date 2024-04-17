@@ -28,7 +28,7 @@ class database():
         self.createC()
         self.createF()
         self.createU()
-        self.createRD
+        self.createRD()
     
     def reset(self):
         os.remove("databases\\main.db")
