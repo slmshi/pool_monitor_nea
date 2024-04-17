@@ -63,19 +63,19 @@ class database():
     def pc_addto(self, data):
         pc = PoolCheck()
         self.pcID = pc.getNewID()
-        pc.addto(data[0].slice(1))
+        pc.addto(data[0].tail(1))
         pc.close()
         
     def c_addto(self, data):
         c = Check()
         self.cID = c.getNewID()
-        c.addto(data[1].slice(1))
+        c.addto(data[1].tail(1))
         c.close()
     
     def f_addto(self, data):
         f = Filter()
         self.fID = f.getNewID
-        f.addto(data[2].slice(1))
+        f.addto(data[2].tail(1))
         f.close()
         
     def r_addto(self, data):
