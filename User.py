@@ -35,7 +35,7 @@ class login():
             return False
 
     def userLogin(self, username, password, email): # logs in the user
-        check = self.__cur.execute(f"SELECT UserID FROM User WHERE email='{email}' AND username='{username}' AND password='{password}'")
+        check = self.__cur.execute(f"""SELECT UserID FROM User WHERE email='{email}' AND username='{username}' AND password='{password}'""")
         check = check.fetchone()
         print(check)
         if check:
